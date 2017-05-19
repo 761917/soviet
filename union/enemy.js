@@ -56,3 +56,26 @@ function enemyFire(other)
 {
   lasers.push(new Laser(other.x, other.y, false));
 }
+
+var curEnemies=[];
+function setFly(other)
+{
+  curEnemies.push(other);
+}
+function fly()
+{
+  if(curEnemies.length>0 && enemies.length>0)
+  {
+    for(var i=0; i<curEnemies.length; i++)
+    {
+      curEnemies[i].x+=random(10)-5;
+      curEnemies[i].y+=10
+      if(curEnemies[i].y>height+32)
+        curEnemies[i].y=-32;
+      if(curEnemies[i].y>240 || curEnemies[i].y<32 || random(1)>.25)
+        tempLasers.push(curEnemies[i]);
+    }
+    curEnemies=tempLasers;
+    tempLasers=[];
+  }
+}

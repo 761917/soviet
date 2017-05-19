@@ -146,9 +146,13 @@ function draw() {
     fill(0);
     text("Score: "+score, 0, 1020);
     text("Lives Remaining: "+lives, 0, 1070);
-    if (random(1)>.95) {
+    if (random(1)>.98) {
       enemyFire(random(enemies));
     }
+    if (random(1)>.995) {
+      setFly(random(enemies));
+    }
+    fly();
   }
 }
 function jukeBox()
