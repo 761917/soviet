@@ -3,9 +3,15 @@ function Enemy(x, y)
   this.x=x;
   this.y=y;
   this.sprite=random(sprites);
+  this.hasLooped=false;
+  this.isFlying=false;
   this.display=function()
   {
     image(this.sprite, this.x, this.y);
+  }
+  this.check=function(other)
+  {
+    return (this.x-32<other.x+32 && this.x+32>other.x-32 && this.y+32>other.y-32 && this.y-32<other.y+32);
   }
 }
 function Laser(x, y, player)
@@ -42,7 +48,6 @@ function Explosion(x, y)
   if (random(1)>.9) {
     effects.scream.play();
   }
-  effects.scream.setVolume(0.2);
   this.x=x;
   this.y=y;
   this.timeOut=15;
@@ -54,28 +59,42 @@ function Explosion(x, y)
 }
 function enemyFire(other)
 {
-  lasers.push(new Laser(other.x, other.y, false));
-}
-
-var curEnemies=[];
-function setFly(other)
-{
-  curEnemies.push(other);
+  if(other!=null)
+    lasers.push(new Laser(other.x, other.y, false));
 }
 function fly()
 {
-  if(curEnemies.length>0 && enemies.length>0)
+  for(var i=0; i<enemies.length; i++)
   {
-    for(var i=0; i<curEnemies.length; i++)
+    if(enemies[i].isFlying==true)
     {
-      curEnemies[i].x+=random(10)-5;
-      curEnemies[i].y+=10
-      if(curEnemies[i].y>height+32)
-        curEnemies[i].y=-32;
-      if(curEnemies[i].y>240 || curEnemies[i].y<32 || random(1)>.25)
-        tempLasers.push(curEnemies[i]);
+      enemies[i].y+=10;
+      enemies[i].x-=random((enemies[i].x-playerShip.x)/50);
+      //if(enemies[i].x!=playerShip.x)
+        //enemies[i].x-=random(10)-2;
+      //else if(enemies[i].x<playerShip.x)
+        //enemies[i].x+=random(;
+      if(enemies[i].y>height+32)
+      {
+        enemies[i].y=-32;
+        enemies[i].hasLooped==true;
+      }
+      if(enemies[i].y>32 && enemies[i].y<240)// && enemies[i].hasLooped==true)
+      {
+        enemies[i].isFlying=false;
+        enemies[i].hasLooped=false;
+      }
     }
-    curEnemies=tempLasers;
-    tempLasers=[];
+    else
+    {
+      ebb(enemies[i]);
+      if(random(1)>.99)//how likely it is an enemy will fly
+        enemies[i].isFlying=true;
+    }
   }
 }
+  
+  
+  
+  
+  

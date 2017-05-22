@@ -7,6 +7,7 @@ var explosions;
 var temp;
 var score, lives;
 var death;
+var clockwork;
 
 numBacks=18; //change these when adding more
 numSongs=10;
@@ -68,9 +69,11 @@ function setup() {
   score=0;
   lives=2;
   isDead=false;
+  clockwork=0;
 }
 
 function draw() {
+  clockwork++;
   if (lives<0)
   {
     lives=999;
@@ -123,9 +126,17 @@ function draw() {
     }
     explosions=tempLasers;
     tempLasers=[];
-    for (var i=0; i<enemies.length; i++)//enemies
+    for (var i=enemies.length-1; i>=0; i--)//enemies
     {
       enemies[i].display();
+      if(enemies[i].check(playerShip)==true)//---------------
+      {
+        explosions.push(new Explosion(enemies[i].x, enemies[i].y));
+        explosions.push(new Explosion(playerShip.x, playerShip.y));
+        enemies.splice(i, 1);
+        playerShip=new MainShip();
+        lives--;
+      }
     }
     playerShip.display();
     if (keyIsDown(LEFT_ARROW)&&playerShip.x>32)//basic controls
@@ -146,13 +157,15 @@ function draw() {
     fill(0);
     text("Score: "+score, 0, 1020);
     text("Lives Remaining: "+lives, 0, 1070);
-    if (random(1)>.98) {
+    if (random(1)>.95)//how likely it is any enemy will fire
       enemyFire(random(enemies));
-    }
-    if (random(1)>.995) {
-      setFly(random(enemies));
-    }
     fly();
+    if(clockwork>180)
+      clockwork=0;
+    else if(clockwork>135 || clockwork<=45)
+      setEbb(-.5*(clockwork%45)/5);
+    else if(clockwork>45)
+      setEbb(.5*(clockwork%45)/5);
   }
 }
 function jukeBox()
