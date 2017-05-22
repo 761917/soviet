@@ -8,6 +8,7 @@ var temp;
 var score, lives;
 var death;
 var clockwork;
+var textLines, spaceMissions, arbor;
 
 numBacks=18; //change these when adding more
 numSongs=10;
@@ -23,6 +24,8 @@ function preload()//Soyuz (\d+|T\S+)[\t\s]  regex for testing mission name (see 
   tempLasers=[];
   explosions=[];
   starSprites=[];
+  textLines=loadStrings("data/textFiles/spaceMissions.txt");
+  spaceMissions=[];
 
   for (var i=1; i<=numBacks; i++)//loads backgrounds
   {
@@ -64,12 +67,17 @@ function setup() {
       enemies.push(new Enemy(320+i*80, 80+j*80));
     }
   }
+  for(var i=0; i<textLines.length; i++)
+  {
+    spaceMissions.push(/Soyuz (\d+|T\S+)[\t\s]/.exec(textLines[i]));
+  }
   playerShip=new MainShip();
   exSprite=loadImage("data/sprites/explode.png");
   score=0;
   lives=2;
   isDead=false;
   clockwork=0;
+  //console.log(spaceMissions.toString());//im goin in
 }
 
 function draw() {
@@ -155,7 +163,7 @@ function draw() {
     }
     textSize(40);
     fill(0);
-    text("Score: "+score, 0, 1020);
+    text("Score: "+score+"  Mission: "+random(spaceMissions), 0, 1020);//look at these
     text("Lives Remaining: "+lives, 0, 1070);
     if (random(1)>.95)//how likely it is any enemy will fire
       enemyFire(random(enemies));
