@@ -8,7 +8,8 @@ var temp;
 var score, lives;
 var death;
 var clockwork;
-var textLines, spaceMissions, arbor;
+var textLines, spaceMissions;
+var arbor, root, curLeaf;
 
 numBacks=18; //change these when adding more
 numSongs=10;
@@ -51,7 +52,9 @@ effects={laser:
   scream:
   loadSound("data/soundEffects/q3.mp3")
 };
-death={screen:loadImage("data/backgrounds/deathScreen.jpg"),music:loadSound("data/songs/deathMusic.mp3")};
+death={screen:
+loadImage("data/backgrounds/deathScreen.jpg"), music:
+loadSound("data/songs/deathMusic.mp3")};
 }
 function setup() {
   createCanvas(1920, 1080);
@@ -67,9 +70,9 @@ function setup() {
       enemies.push(new Enemy(320+i*80, 80+j*80));
     }
   }
-  for(var i=0; i<textLines.length; i++)
+  for (var i=0; i<textLines.length; i++)
   {
-    spaceMissions.push(/Soyuz (\d+|T\S+)[\t\s]/.exec(textLines[i]));
+    spaceMissions.push({mission:/(Soyuz \d+)|(Soyuz T\S+)/.exec(textLines[i]), date:/\d+ \w+ \d {4}/.exec(textLines[i])});
   }
   playerShip=new MainShip();
   exSprite=loadImage("data/sprites/explode.png");
@@ -77,6 +80,7 @@ function setup() {
   lives=2;
   isDead=false;
   clockwork=0;
+  shuffle(spaceMissions);
   //console.log(spaceMissions.toString());//im goin in
 }
 
@@ -90,7 +94,7 @@ function draw() {
     imageMode(CENTER);
     curSong.pause();
     death.music.play();
-  } else if(lives>=0 && lives<100)
+  } else if (lives>=0 && lives<100)
   {
     jukeBox();//keeps songs rolling
     imageMode(CORNER);
@@ -137,7 +141,7 @@ function draw() {
     for (var i=enemies.length-1; i>=0; i--)//enemies
     {
       enemies[i].display();
-      if(enemies[i].check(playerShip)==true)//---------------
+      if (enemies[i].check(playerShip)==true)//---------------
       {
         explosions.push(new Explosion(enemies[i].x, enemies[i].y));
         explosions.push(new Explosion(playerShip.x, playerShip.y));
@@ -163,16 +167,16 @@ function draw() {
     }
     textSize(40);
     fill(0);
-    text("Score: "+score+"  Mission: "+random(spaceMissions), 0, 1020);//look at these
+    text("Score: "+score+"      Mission: "+spaceMissions[0].mission[0]+"      Date: "+spaceMissions[0].date[0], 0, 1020);//null
     text("Lives Remaining: "+lives, 0, 1070);
     if (random(1)>.95)//how likely it is any enemy will fire
       enemyFire(random(enemies));
     fly();
-    if(clockwork>180)
+    if (clockwork>180)
       clockwork=0;
-    else if(clockwork>135 || clockwork<=45)
+    else if (clockwork>135 || clockwork<=45)
       setEbb(-.5*(clockwork%45)/5);
-    else if(clockwork>45)
+    else if (clockwork>45)
       setEbb(.5*(clockwork%45)/5);
   }
 }
