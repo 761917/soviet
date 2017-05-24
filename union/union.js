@@ -72,7 +72,7 @@ function setup() {
   }
   for (var i=0; i<textLines.length; i++)
   {
-    spaceMissions.push({mission:/(Soyuz \d+)|(Soyuz T\S+)/.exec(textLines[i]), date:/\d+ \w+ \d {4}/.exec(textLines[i])});
+    spaceMissions.push({mission:/(Soyuz \d+)|(Soyuz T\S+)/.exec(textLines[i]), date:/\d+ \w+ \d{4}/.exec(textLines[i])});
   }
   playerShip=new MainShip();
   exSprite=loadImage("data/sprites/explode.png");
@@ -80,7 +80,7 @@ function setup() {
   lives=2;
   isDead=false;
   clockwork=0;
-  shuffle(spaceMissions);
+  spaceMissions=shuffle(spaceMissions);
   //console.log(spaceMissions.toString());//im goin in
 }
 
@@ -168,7 +168,7 @@ function draw() {
     }
     textSize(40);
     fill(0);
-    //text("Score: "+score+"      Mission: "+spaceMissions[0].mission[0]+"      Date: "+spaceMissions[0].date[0], 0, 1020);//null
+    text("Score: "+score+"      Mission: "+spaceMissions[0].mission[0]+"      Date: "+spaceMissions[0].date, 0, 1020);//null
     text("Lives Remaining: "+lives, 0, 1070);
     if (random(1)>.95)//how likely it is any enemy will fire
       enemyFire(random(enemies));
@@ -193,4 +193,14 @@ function keyPressed()
 {
   if (keyCode==32)
     lasers.push(new Laser(playerShip.x, playerShip.y, true));
+}
+function shuffle(a) {
+    var j, x, i;
+    for (i = a.length; i; i--) {
+        j = Math.floor(Math.random() * i);
+        x = a[i - 1];
+        a[i - 1] = a[j];
+        a[j] = x;
+    }
+    return a;
 }
