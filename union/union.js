@@ -94,6 +94,7 @@ function draw() {
     imageMode(CENTER);
     curSong.pause();
     death.music.play();
+    death.music.setVolume(10);
   } else if (lives>=0 && lives<100)
   {
     jukeBox();//keeps songs rolling
@@ -167,7 +168,7 @@ function draw() {
     }
     textSize(40);
     fill(0);
-    text("Score: "+score+"      Mission: "+spaceMissions[0].mission[0]+"      Date: "+spaceMissions[0].date[0], 0, 1020);//null
+    //text("Score: "+score+"      Mission: "+spaceMissions[0].mission[0]+"      Date: "+spaceMissions[0].date[0], 0, 1020);//null
     text("Lives Remaining: "+lives, 0, 1070);
     if (random(1)>.95)//how likely it is any enemy will fire
       enemyFire(random(enemies));
