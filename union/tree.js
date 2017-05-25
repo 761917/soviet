@@ -1,25 +1,17 @@
-function arrayToTree(array)
+function Tree(val)
 {
-  this.data=null;
+  this.value=val;
   this.left=null;
   this.right=null;
-  if(array==null)
-    return null;
-  else
+  this.insert=function(val)
   {
-    if(array.length==1)
-      return array[0];
-    else
-    {
-      this.data=array[0];
-      array.splice(0,1);
-      this.left
-    }
+    if(val.mission[0]<this.value.mission[0] && this.left!=null)
+      this.left.insert(val);
+    else if(val.mission[0]<this.value.mission[0] && this.left==null)
+      this.left=new Tree(val);
+    else if(val.mission[0]>this.value.mission[0] && this.right!=null)
+      this.right.insert(val);
+    else if(val.mission[0]>this.value.mission[0] && this.right==null)
+      this.right=new Tree(val);
   }
-}
-function Leaf(data,left,right)
-{
-  this.data=data;
-  this.left=left;
-  this.right=right;
 }

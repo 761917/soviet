@@ -70,16 +70,12 @@ function fly()
     {
       enemies[i].y+=10;
       enemies[i].x-=random((enemies[i].x-playerShip.x)/50);
-      //if(enemies[i].x!=playerShip.x)
-        //enemies[i].x-=random(10)-2;
-      //else if(enemies[i].x<playerShip.x)
-        //enemies[i].x+=random(;
       if(enemies[i].y>height+32)
       {
         enemies[i].y=-32;
         enemies[i].hasLooped==true;
       }
-      if(enemies[i].y>32 && enemies[i].y<240)// && enemies[i].hasLooped==true)
+      if(enemies[i].y>62 && enemies[i].y<270)// && enemies[i].hasLooped==true)
       {
         enemies[i].isFlying=false;
         enemies[i].hasLooped=false;
