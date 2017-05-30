@@ -11,8 +11,8 @@ var clockwork;
 var textLines, spaceMissions;
 var arbor;
 
-numBacks=18; //change these when adding more
-numSongs=10;
+numBacks=4; //change these when adding more
+numSongs=3;
 numSprites=11;
 
 function preload()//Soyuz (\d+|T\S+)[\t\s]  regex for testing mission name (see file)
@@ -61,7 +61,6 @@ function setup() {
   curBack=random(backgrounds);
   curSong=random(songs);
   curSong.play();
-  noCursor();
   enemiesPlease();
   for (var i=0; i<textLines.length; i++)
   {
@@ -78,8 +77,8 @@ function setup() {
   level=1;
   makeMeATree();
   ayudame=true;
+  noCursor();
 }
-
 function draw() {
   clockwork++;
   if (lives<0)//player is dead
